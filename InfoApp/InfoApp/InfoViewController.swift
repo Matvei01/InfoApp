@@ -7,50 +7,37 @@
 
 import UIKit
 
+// MARK: -  InfoViewController
 final class InfoViewController: UIViewController {
     
+    // MARK: -  Private Properties
     private let name = "Матвей"
     private let surname = "Хлестов"
-    private let streamNumber = "ios 6"
+    private let streamNumber = "ios 7"
     
+    // MARK: -  UI Elements
     private lazy var nameLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 51, y: 80, width: 120, height: 19))
-        label.text = "Имя:"
-        label.font = .systemFont(ofSize: 16, weight: UIFont.Weight(700))
-        
-        return label
+        setupLabel(text: "Имя:", frame: CGRect(x: 51, y: 80, width: 120, height: 19))
     }()
     
     private lazy var surnameLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 51, y: 112, width: 180, height: 19))
-        label.text = "Фамилия:"
-        label.font = .systemFont(ofSize: 16, weight: UIFont.Weight(700))
-        
-        return label
+        setupLabel(text: "Фамилия:", frame: CGRect(x: 51, y: 112, width: 180, height: 19))
     }()
     
     private lazy var streamNumberLabel: UILabel = {
-        let label = UILabel(frame: CGRect(x: 51, y: 144, width: 180, height: 19))
-        label.text = "Номер потока:"
-        label.font = .systemFont(ofSize: 16, weight: UIFont.Weight(700))
-        
-        return label
+        setupLabel(text: "Номер потока:", frame: CGRect(x: 51, y: 144, width: 180, height: 19))
     }()
     
     private lazy var addDataButton: UIButton = {
         let button = UIButton(type: .system, primaryAction: buttonAction)
         
-        let buttonWidth: CGFloat = view.frame.width * 0.8
-        let buttonHeight: CGFloat = 69
-        let buttonX = (view.frame.width - buttonWidth) / 2
-        let buttonY = view.frame.height * 0.8
-        
-        button.frame = CGRect(
-            x: buttonX,
-            y: buttonY,
-            width: buttonWidth,
-            height: buttonHeight
+        setButtonFrame(
+            button,
+            width: view.frame.width * 0.8,
+            height: 69,
+            buttonY: view.frame.height * 0.8
         )
+        
         button.backgroundColor = .black
         button.setTitle("Добавить данные", for: .normal)
         button.setTitleColor(.white, for: .normal)
@@ -64,16 +51,11 @@ final class InfoViewController: UIViewController {
     private lazy var removeDataButton: UIButton = {
         let button = UIButton(type: .system, primaryAction: buttonAction)
         
-        let buttonWidth: CGFloat = view.frame.width * 0.4
-        let buttonHeight: CGFloat = 19
-        let buttonX = (view.frame.width - buttonWidth) / 2
-        let buttonY = view.frame.height * 0.9
-        
-        button.frame = CGRect(
-            x: buttonX,
-            y: buttonY,
-            width: buttonWidth,
-            height: buttonHeight
+        setButtonFrame(
+            button,
+            width: view.frame.width * 0.4,
+            height: 19,
+            buttonY: view.frame.height * 0.9
         )
         
         button.setTitle("Очистить данные", for: .normal)
@@ -83,29 +65,76 @@ final class InfoViewController: UIViewController {
         return button
     }()
     
+    // MARK: -  Action
     private lazy var buttonAction = UIAction { [self] action in
         guard let sender = action.sender as? UIButton else { return }
         
         switch sender.tag {
         case 0:
-            self.nameLabel.text = "Имя: \(name)"
-            self.surnameLabel.text = "Фамилия: \(surname)"
-            self.streamNumberLabel.text = "Номер потока: \(streamNumber)"
+            setLabelText(nameLabel, text: "Имя: \(name)")
+            setLabelText(surnameLabel, text: "Фамилия: \(surname)")
+            setLabelText(streamNumberLabel, text: "Номер потока: \(streamNumber)")
         default:
-            self.nameLabel.text = "Имя:"
-            self.surnameLabel.text = "Фамилия:"
-            self.streamNumberLabel.text = "Номер потока:"
+            setLabelText(nameLabel, text: "Имя:")
+            setLabelText(surnameLabel, text: "Фамилия:")
+            setLabelText(streamNumberLabel, text: "Номер потока:")
         }
     }
     
+    // MARK: -  Override Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+}
+
+// MARK: -  Private Methods
+private extension InfoViewController {
+    func setupView() {
         view.backgroundColor = .white
-        view.addSubview(nameLabel)
-        view.addSubview(surnameLabel)
-        view.addSubview(streamNumberLabel)
-        view.addSubview(addDataButton)
-        view.addSubview(removeDataButton)
+        addSubviews()
+    }
+    
+    func addSubviews() {
+        setupSubviews(
+            nameLabel,
+            surnameLabel,
+            streamNumberLabel,
+            addDataButton,
+            removeDataButton
+        )
+    }
+    
+    func setupSubviews(_ subviews: UIView... ) {
+        for subview in subviews {
+            view.addSubview(subview)
+        }
+    }
+    
+    func setupLabel(text: String, frame: CGRect) -> UILabel {
+        let label = UILabel(frame: frame)
+        label.text = text
+        label.font = .systemFont(ofSize: 16, weight: UIFont.Weight(700))
+        
+        return label
+    }
+    
+    func setLabelText(_ label: UILabel, text: String) {
+        label.text = text
+    }
+    
+    func setButtonFrame(_ button: UIButton, width: CGFloat, height: CGFloat, buttonY: CGFloat) {
+        let buttonWidth = width
+        let buttonHeight = height
+        let buttonX = (view.frame.width - buttonWidth) / 2
+        let buttonY = buttonY
+        
+        button.frame = CGRect(
+            x: buttonX,
+            y: buttonY,
+            width: buttonWidth,
+            height: buttonHeight
+        )
     }
 }
 
