@@ -15,7 +15,7 @@ final class InfoViewController: UIViewController {
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 51, y: 80, width: 120, height: 19))
-        label.text = "Имя: \(name)"
+        label.text = "Имя:"
         label.font = .systemFont(ofSize: 16, weight: UIFont.Weight(700))
         
         return label
@@ -23,7 +23,7 @@ final class InfoViewController: UIViewController {
     
     private lazy var surnameLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 51, y: 112, width: 180, height: 19))
-        label.text = "Фамилия: \(surname)"
+        label.text = "Фамилия:"
         label.font = .systemFont(ofSize: 16, weight: UIFont.Weight(700))
         
         return label
@@ -31,14 +31,14 @@ final class InfoViewController: UIViewController {
     
     private lazy var streamNumberLabel: UILabel = {
         let label = UILabel(frame: CGRect(x: 51, y: 144, width: 180, height: 19))
-        label.text = "Номер потока: \(streamNumber)"
+        label.text = "Номер потока:"
         label.font = .systemFont(ofSize: 16, weight: UIFont.Weight(700))
         
         return label
     }()
     
     private lazy var addDataButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .system, primaryAction: buttonAction)
         
         let buttonWidth: CGFloat = view.frame.width * 0.8
         let buttonHeight: CGFloat = 69
@@ -62,7 +62,7 @@ final class InfoViewController: UIViewController {
     }()
     
     private lazy var removeDataButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton(type: .system, primaryAction: buttonAction)
         
         let buttonWidth: CGFloat = view.frame.width * 0.4
         let buttonHeight: CGFloat = 19
@@ -83,8 +83,19 @@ final class InfoViewController: UIViewController {
         return button
     }()
     
-    private lazy var buttonAction = UIAction { action in
+    private lazy var buttonAction = UIAction { [self] action in
+        guard let sender = action.sender as? UIButton else { return }
         
+        switch sender.tag {
+        case 0:
+            self.nameLabel.text = "Имя: \(name)"
+            self.surnameLabel.text = "Фамилия: \(surname)"
+            self.streamNumberLabel.text = "Номер потока: \(streamNumber)"
+        default:
+            self.nameLabel.text = "Имя:"
+            self.surnameLabel.text = "Фамилия:"
+            self.streamNumberLabel.text = "Номер потока:"
+        }
     }
     
     override func viewDidLoad() {
